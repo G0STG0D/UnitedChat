@@ -48,7 +48,7 @@ public class Formatter {
     }
 
     private String excludeEmojis(String message) {
-        return message.replaceAll(":[a-zA-Z]+:", "<white>$0</white>");
+        return message.replaceAll(":[a-zA-Z_]+:", "<white>$0</white>");
     }
 
     private String excludeInteractiveChatDisplays(Player player, String message) {

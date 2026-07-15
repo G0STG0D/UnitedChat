@@ -53,11 +53,11 @@ public class PlayerListener implements Listener {
         String finalizedMessage = formatter.finalizeMessage(player, message);
 
         if (plugin.getChatSettingsManager().isGradientEnabled(player)) {
-            event.setMessage(
-                    formatter.gradientMessage(finalizedMessage, plugin.getChatSettingsManager().getGradient(player)));
+            event.setMessage(formatter.gradientMessage(finalizedMessage, plugin.getChatSettingsManager().getGradient(player)));
             return;
         }
         event.setMessage(formatter.colorMessage(finalizedMessage));
+        event.setMessage(message);
     }
 
 }

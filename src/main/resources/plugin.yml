@@ -4,7 +4,7 @@ main: org.unitedlands.unitedchat.UnitedChat
 api-version: 1.21
 authors: [ Maroon28 ]
 contributors: [Litning11, Theriel_]
-depend: [ Towny ]
+depend: [ Towny, TownyChat ]
 softdepend: [PlaceholderAPI]
 commands:
   gradient:
