@@ -274,8 +274,8 @@ public class QuizManager {
         };
     }
 
-    public List<Component> buildHighscore(int page) {
-        return storage.buildHighscore(page);
+    public List<Component> buildHighscore(String period, int page) {
+        return storage.buildHighscore(period, page);
     }
 
     public void sendQuizQuestionTo(Player player) {

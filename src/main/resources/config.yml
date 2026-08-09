@@ -67,7 +67,7 @@ quiz:
   math-prompt: "What is <yellow><bold>%formula%</bold></yellow> ?"
   highscore:
     # Available placeholders: %rank%, %name%, %wins%, %wins_label%
-    header: "\n<gold><bold>⭐ Quiz Highscore</bold></gold>"
+    header: "\n<gold><bold>⭐ Quiz Highscore — %period%</bold></gold>"
     entry: " <gray>#%rank%</gray> <white><bold>%name%</bold></white> <dark_gray>—</dark_gray> <yellow>%wins% %wins_label%</yellow>"
     # Available placeholders: <prev>, <next>, %page%, %total%
     page-nav: "\n<prev><gray>    Page %page%/%total%    </gray><next>"

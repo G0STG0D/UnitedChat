@@ -70,15 +70,22 @@ public class QuizStorage {
         save();
     }
 
-    public List<Component> buildHighscore(int page) {
+    public List<Component> buildHighscore(String period, int page) {
         var cfg      = Config.get();
         var pageSize = cfg.quizHighscorePageSize();
-        var sorted   = data.scores.entrySet().stream()
+        var scores   = period.equals("alltime") ? data.scores : scoresForPeriod(cutoffFor(period));
+        var sorted   = scores.entrySet().stream()
                 .sorted(Comparator.comparingInt((Map.Entry<String, PlayerData> e) -> e.getValue().wins).reversed())
                 .toList();
 
+        var periodLabel = switch (period) {
+            case "weekly"  -> "Weekly";
+            case "monthly" -> "Monthly";
+            default        -> "All Time";
+        };
+
         var lines = new ArrayList<Component>();
-        lines.add(QuizUtils.MM.deserialize(cfg.quizHighscoreHeader()));
+        lines.add(QuizUtils.MM.deserialize(cfg.quizHighscoreHeader().replace("%period%", periodLabel)));
 
         if (sorted.isEmpty()) {
             lines.add(QuizUtils.MM.deserialize(cfg.quizHighscoreEmpty()));
@@ -110,22 +117,22 @@ public class QuizStorage {
             }
 
             if (totalPages > 1)
-                lines.add(buildPageNav(clampedPage, totalPages));
+                lines.add(buildPageNav(period, clampedPage, totalPages));
         }
 
         return lines;
     }
 
-    private Component buildPageNav(int page, int totalPages) {
+    private Component buildPageNav(String period, int page, int totalPages) {
         var prev = page > 1
                 ? QuizUtils.MM.deserialize("<yellow><bold>[◀]</bold></yellow>")
-                        .clickEvent(ClickEvent.runCommand("/uc quiz highscore " + (page - 1)))
+                        .clickEvent(ClickEvent.runCommand("/uc quiz highscore " + period + " " + (page - 1)))
                         .hoverEvent(HoverEvent.showText(QuizUtils.MM.deserialize("<gray>Previous page</gray>")))
                 : QuizUtils.MM.deserialize("<dark_gray><bold>[◀]</bold></dark_gray>");
 
         var next = page < totalPages
                 ? QuizUtils.MM.deserialize("<yellow><bold>[▶]</bold></yellow>")
-                        .clickEvent(ClickEvent.runCommand("/uc quiz highscore " + (page + 1)))
+                        .clickEvent(ClickEvent.runCommand("/uc quiz highscore " + period + " " + (page + 1)))
                         .hoverEvent(HoverEvent.showText(QuizUtils.MM.deserialize("<gray>Next page</gray>")))
                 : QuizUtils.MM.deserialize("<dark_gray><bold>[▶]</bold></dark_gray>");
 
@@ -136,6 +143,26 @@ public class QuizStorage {
         return QuizUtils.MM.deserialize(format,
                 Placeholder.component("prev", prev),
                 Placeholder.component("next", next));
+    }
+
+    private Map<String, PlayerData> scoresForPeriod(long cutoffMs) {
+        var result = new LinkedHashMap<String, PlayerData>();
+        for (var e : data.history) {
+            if (e.timestamp < cutoffMs || e.winner == null) continue;
+            var existing = data.scores.get(e.winner);
+            var name = existing != null ? existing.name : e.winner;
+            var prev = result.getOrDefault(e.winner, new PlayerData(name, 0));
+            result.put(e.winner, new PlayerData(prev.name, prev.wins + 1));
+        }
+        return result;
+    }
+
+    private long cutoffFor(String period) {
+        return switch (period) {
+            case "weekly"  -> System.currentTimeMillis() - 7  * 86_400_000L;
+            case "monthly" -> System.currentTimeMillis() - 30 * 86_400_000L;
+            default        -> 0L;
+        };
     }
 
     private void load() {
