@@ -57,11 +57,15 @@ public class ChatToggleCommand implements CommandExecutor {
                     sender.sendMessage(plugin.getChatMessageManager().getMessage(Messages.NO_PERM));
                     return true;
                 }
+
                 QuestionType type = null;
                 if (args.length >= 3) {
-                    try { type = QuestionType.valueOf(args[2].toUpperCase()); }
+                    try {
+                        type = QuestionType.valueOf(args[2].toUpperCase());
+                    }
                     catch (IllegalArgumentException ignored) {}
                 }
+
                 sender.sendMessage(plugin.getChatMessageManager().getMessage(Messages.QUIZ_FORCED));
                 plugin.getQuizManager().forceNext(type);
                 return true;
@@ -78,8 +82,19 @@ public class ChatToggleCommand implements CommandExecutor {
                 return true;
             }
             if (args[1].equalsIgnoreCase("highscore")) {
-                int page = args.length >= 3 ? parsePageArg(args[2]) : 1;
-                plugin.getQuizManager().buildHighscore(page).forEach(sender::sendMessage);
+                var period = "alltime";
+                var page = 1;
+
+                if (args.length >= 3) {
+                    if (args[2].equalsIgnoreCase("weekly") || args[2].equalsIgnoreCase("monthly") || args[2].equalsIgnoreCase("alltime")) {
+                        period = args[2].toLowerCase();
+                        if (args.length >= 4) page = parsePageArg(args[3]);
+                    } else {
+                        page = parsePageArg(args[2]);
+                    }
+                }
+
+                plugin.getQuizManager().buildHighscore(period, page).forEach(sender::sendMessage);
                 return true;
             }
             if (args[1].equalsIgnoreCase("next")) {
