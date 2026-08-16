@@ -34,8 +34,11 @@ quiz:
     name: "minecraft:entity.experience_orb.pickup"
     volume: 1.0
     pitch: 1.0
-  header: "\n\n<red><st>+|✦                      </st><bold>[ <white>❓ Quiz</white> ]</bold><st>                     |✦+</st></red>\n"
-  footer: "\n<red><st>+|✦</st><st>                          +✦+                          </st><st>|✦+</st></red>\n\n"
+  header: "\n\n <red><st>+|✦                      </st><bold>[ <white>❓ Quiz</white> ]</bold><st>                     |✦+</st></red>\n"
+  footer: "
+<red><st>+|✦</st><st>                          +✦+                          </st><st>|✦+</st></red>\n
+<dark_gray>         Go to <gray><bold><click:open_url:'forms.unitedlands.net'>forms.unitedlands.net</click></bold></gray> to\n       submit your own UL-specific questions!\n
+<red><st>+|✦</st><st>                          +✦+                          </st><st>|✦+</st></red>\n"
   answer-prompt: "<gray><italic>              ✎ Type your answer in chat!</italic></gray>"
   # Available placeholders: %letter%, %choice%
   choice-format: "  <yellow>%letter%</yellow> <white>%choice%</white>"
@@ -195,18 +198,17 @@ messages:
   # |               Join Messages                 | #
   # +---------------------------------------------+ #
 
-  motd:
-    - '<gradient:#ffffff:#ff5555>------------------------------</gradient>'
-    - '                     <bold><red>UNITED</red><white>LANDS</white></bold>'
-    - '                <red>Welcome back <yellow><italic>%player_name%</italic><red>!'
-    - '    <red>There are currently <white>%server_online% <red>players online.'
-    - '<gradient:#ffffff:#ff5555>------------------------------</gradient>'
-  first-join-motd:
-    - '<gradient:#ffffff:#ff5555>------------------------------</gradient>'
-    - '                     <red><bold>UNITED<white><bold>LANDS     '
-    - '             <red>Welcome to <red><bold>United<white><bold>Lands <yellow><italic>%player_name%&c!'
-    - '    <red>There are currently <white>%server_online% <red>players online.'
-    - '<gradient:#ffffff:#ff5555>------------------------------</gradient>'
+  # Title (with subtitle) shown on the player's screen when they join.
+  join-title:
+    title: '<bold><red>Uɴɪᴛᴇᴅ</red> <white>Lᴀɴᴅꜱ</white></bold>'
+    subtitle: '<gray>Welcome back, %player_name%!'
+  first-join-title:
+    title: '<bold><red>Uɴɪᴛᴇᴅ</red> <white>Lᴀɴᴅꜱ</white></bold>'
+    subtitle: '<gray>Welcome, %player_name% !'
+  # Fade-in, stay and fade-out duration, in ticks (20 ticks = 1 second).
+  title-fade-in: 10
+  title-stay: 60
+  title-fade-out: 20
 
   # +---------------------------------------------+ #
   # |            Gradient Messages                | #

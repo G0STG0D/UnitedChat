@@ -2,6 +2,7 @@ package org.unitedlands.unitedchat.managers;
 
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.JoinConfiguration;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import org.apache.commons.lang3.tuple.Pair;
 import org.bukkit.Bukkit;
@@ -281,7 +282,7 @@ public class QuizManager {
     public void sendQuizQuestionTo(Player player) {
         if (activeQuestion == null) return;
 
-        QuizUtils.buildMessage(activeQuestion).forEach(player::sendMessage);
+        player.sendMessage(Component.join(JoinConfiguration.newlines(), QuizUtils.buildMessage(activeQuestion)));
         player.showBossBar(activeBossBar);
 
         var cfg = Config.get();
