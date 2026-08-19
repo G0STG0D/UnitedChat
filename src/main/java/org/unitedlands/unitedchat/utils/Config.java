@@ -69,8 +69,13 @@ public record Config(
         // Messages
         Map<String, Object> messages,
         String              messagePrefix,
-        List<String>        motd,
-        List<String>        firstJoinMotd
+        String              joinTitle,
+        String              joinSubtitle,
+        String              firstJoinTitle,
+        String              firstJoinSubtitle,
+        int                 titleFadeIn,
+        int                 titleStay,
+        int                 titleFadeOut
 ) {
 
     private static Config instance;
@@ -134,8 +139,13 @@ public record Config(
 
         var messages      = cfg.getConfigurationSection("messages").getValues(false);
         var prefix        = cfg.getString("messages.prefix", "");
-        var motd          = cfg.getStringList("messages.motd");
-        var firstJoinMotd = cfg.getStringList("messages.first-join-motd");
+        var joinTitle          = cfg.getString("messages.join-title.title", "");
+        var joinSubtitle       = cfg.getString("messages.join-title.subtitle", "");
+        var firstJoinTitle     = cfg.getString("messages.first-join-title.title", "");
+        var firstJoinSubtitle  = cfg.getString("messages.first-join-title.subtitle", "");
+        var titleFadeIn        = cfg.getInt("messages.title-fade-in", 10);
+        var titleStay          = cfg.getInt("messages.title-stay", 60);
+        var titleFadeOut       = cfg.getInt("messages.title-fade-out", 20);
 
         instance = new Config(
                 features,
@@ -188,8 +198,13 @@ public record Config(
                 presets,
                 messages,
                 prefix,
-                motd,
-                firstJoinMotd
+                joinTitle,
+                joinSubtitle,
+                firstJoinTitle,
+                firstJoinSubtitle,
+                titleFadeIn,
+                titleStay,
+                titleFadeOut
         );
     }
 

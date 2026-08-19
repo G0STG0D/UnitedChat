@@ -16,6 +16,8 @@ import java.util.Random;
 @SuppressWarnings("unchecked")
 public class BroadcastManager extends BukkitRunnable {
 
+    private static final long QUIZ_GRACE_MS = 30_000L;
+
     private final UnitedChat plugin;
     private final List<List<String>> broadcasts;
     private final MiniMessage miniMessage = MiniMessage.miniMessage();
@@ -63,7 +65,10 @@ public class BroadcastManager extends BukkitRunnable {
     @Override
     public void run() {
         if (broadcasts.isEmpty()) return;
-        if (plugin.getQuizManager().isActive()) return;
+
+        var quizManager = plugin.getQuizManager();
+        if (quizManager.isActive()) return;
+        if (quizManager.isScheduled() && quizManager.getNextQuizTime() - System.currentTimeMillis() <= QUIZ_GRACE_MS) return;
 
         List<String> broadcast = broadcasts.get(random.nextInt(broadcasts.size()));
         for (String line : broadcast) {

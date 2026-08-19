@@ -2,6 +2,7 @@ package org.unitedlands.unitedchat.listeners;
 
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.title.Title;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -12,6 +13,8 @@ import org.unitedlands.unitedchat.utils.Formatter;
 import org.unitedlands.unitedchat.UnitedChat;
 
 import com.palmergames.bukkit.TownyChat.events.AsyncChatHookEvent;
+
+import java.time.Duration;
 
 public class PlayerListener implements Listener {
 
@@ -26,11 +29,21 @@ public class PlayerListener implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
         var player = event.getPlayer();
-        var motd = player.hasPlayedBefore()
-                ? Config.get().motd()
-                : Config.get().firstJoinMotd();
+        var cfg    = Config.get();
 
-        motd.forEach(str -> player.sendMessage(miniMessage.deserialize(PlaceholderAPI.setPlaceholders(player, str))));
+        var titleText    = player.hasPlayedBefore() ? cfg.joinTitle()    : cfg.firstJoinTitle();
+        var subtitleText = player.hasPlayedBefore() ? cfg.joinSubtitle() : cfg.firstJoinSubtitle();
+
+        var title = Title.title(
+                miniMessage.deserialize(PlaceholderAPI.setPlaceholders(player, titleText)),
+                miniMessage.deserialize(PlaceholderAPI.setPlaceholders(player, subtitleText)),
+                Title.Times.times(
+                        Duration.ofMillis(cfg.titleFadeIn() * 50L),
+                        Duration.ofMillis(cfg.titleStay() * 50L),
+                        Duration.ofMillis(cfg.titleFadeOut() * 50L)
+                )
+        );
+        player.showTitle(title);
 
         Bukkit.getScheduler().runTask(plugin, () -> plugin.getQuizManager().sendQuizQuestionTo(event.getPlayer()));
     }
