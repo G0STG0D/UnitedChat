@@ -4,7 +4,6 @@ import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.unitedlands.unitedchat.commands.ChatToggleCommand;
-import org.unitedlands.unitedchat.commands.GradientCommand;
 import org.unitedlands.unitedchat.hooks.Placeholders;
 import org.unitedlands.unitedchat.managers.BroadcastManager;
 import org.unitedlands.unitedchat.managers.ChatMessageManager;
@@ -12,7 +11,6 @@ import org.unitedlands.unitedchat.managers.ChatSettingsManager;
 import org.unitedlands.unitedchat.managers.QuizManager;
 import org.unitedlands.unitedchat.listeners.PlayerListener;
 import org.unitedlands.unitedchat.commands.tabcompleters.ChatToggleCommandCompleter;
-import org.unitedlands.unitedchat.commands.tabcompleters.GradientCommandTabCompleter;
 import org.unitedlands.unitedchat.utils.Config;
 
 
@@ -68,9 +66,6 @@ public class UnitedChat extends JavaPlugin {
         quizManager.start();
 
         getServer().getPluginManager().registerEvents(new PlayerListener(this), this);
-        
-        getCommand("gradient").setExecutor(new GradientCommand(this, chatMessageManager, chatSettingsManager));
-        getCommand("gradient").setTabCompleter(new GradientCommandTabCompleter(this));
 
         var chatToggle = new ChatToggleCommand(this);
         getCommand("unitedchat").setExecutor(chatToggle);

@@ -3,6 +3,7 @@ package org.unitedlands.unitedchat.listeners;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.title.Title;
+import net.luckperms.api.LuckPermsProvider;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -15,6 +16,7 @@ import org.unitedlands.unitedchat.UnitedChat;
 import com.palmergames.bukkit.TownyChat.events.AsyncChatHookEvent;
 
 import java.time.Duration;
+import java.util.Objects;
 
 public class PlayerListener implements Listener {
 
@@ -58,13 +60,20 @@ public class PlayerListener implements Listener {
             plugin.getServer().getScheduler().runTaskLater(plugin, () -> plugin.getQuizManager().checkAnswer(player, message), 2L);
 
         String finalizedMessage = formatter.finalizeMessage(player, message);
+        String channelName = event.getChannel().getName().toLowerCase();
 
-        if (plugin.getChatSettingsManager().isGradientEnabled(player)) {
-            event.setMessage(formatter.gradientMessage(finalizedMessage, plugin.getChatSettingsManager().getGradient(player)));
+        String chatcolour = Objects.requireNonNull(LuckPermsProvider.get().getUserManager()
+                .getUser(player.getUniqueId())).getCachedData().getMetaData().getMetaValue("chatcolour");
+
+        // If player has an equipped chat colour from UnitedCosmetics (defined by LuckPerms meta), apply it.
+        // Only send to global chat.
+        if (channelName.equals("general") && chatcolour != null && !chatcolour.isEmpty()) {
+            event.setMessage(formatter.colorMessage(chatcolour + finalizedMessage));
             return;
         }
+
+        // Fallback to normal chat.
         event.setMessage(formatter.colorMessage(finalizedMessage));
-        event.setMessage(message);
     }
 
 }

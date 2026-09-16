@@ -23,25 +23,6 @@ public class ChatSettingsManager {
         return pdc.get(getKey("gradient"), PersistentDataType.STRING);
     }
 
-    public void setGradient(Player player, String gradient) {
-        player.getPersistentDataContainer().set(getKey("gradient"), PersistentDataType.STRING, gradient);
-    }
-
-    public void setGradientEnabled(Player player, boolean toggle) {
-        player.getPersistentDataContainer().set(getKey("gradient-enabled"), PersistentDataType.BOOLEAN, toggle);
-    }
-
-    public boolean isGradientEnabled(Player player) {
-        var pdc = player.getPersistentDataContainer();
-        if (getGradient(player) == null) {
-            return false;
-        }
-        if (!pdc.has(getKey("gradient-enabled"))) {
-            return false;
-        }
-        return pdc.get(getKey("gradient-enabled"), PersistentDataType.BOOLEAN);
-    }
-
     public void setQuizEnabled(Player player, boolean toggle) {
         player.getPersistentDataContainer().set(getKey("quiz-enabled"), PersistentDataType.BOOLEAN, toggle);
     }

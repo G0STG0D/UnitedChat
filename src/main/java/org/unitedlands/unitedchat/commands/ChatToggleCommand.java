@@ -183,9 +183,6 @@ public class ChatToggleCommand implements CommandExecutor {
     }
 
     private void handleReset(Player player) {
-        plugin.getChatSettingsManager().removeKey(player, "gradient");
-        plugin.getChatSettingsManager().removeKey(player, "gradient-enabled");
-
         plugin.getChatSettingsManager().removeKey(player, "chatrank");
         plugin.getChatSettingsManager().removeKey(player, "chatprefix");
         plugin.getChatSettingsManager().removeKey(player, "tabprefix");
