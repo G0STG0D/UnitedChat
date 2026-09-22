@@ -33,10 +33,6 @@ public class Formatter {
         Component gradientedComponent = miniMessage.deserialize(message);
         return color(sectionRGB.serialize(gradientedComponent));
     }
-    public String gradientMessage(String message, String gradient) {
-        Component gradientedComponent = miniMessage.deserialize("<gradient:" + gradient + ">" + message + "</gradient>");
-        return color(sectionRGB.serialize(gradientedComponent));
-    }
 
     @SuppressWarnings("deprecation")
     private String color(String string) {

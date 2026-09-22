@@ -7,13 +7,6 @@ contributors: [ Litning11, Theriel_, G0STG0D ]
 depend: [ Towny, TownyChat ]
 softdepend: [ UnitedLib, PlaceholderAPI, Vault ]
 commands:
-  gradient:
-    description: Main gradient command, used to set gradients, or enable and disable them
-    permission: united.chat.gradient
-    permission-message: '&c&lU&f&lL &8&l» &cYou don''t have permission.'
-    aliases:
-      - gradient
-      - gradientchat
   unitedchat:
     description: Toggles chat features
     aliases:
